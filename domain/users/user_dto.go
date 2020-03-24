@@ -1,0 +1,29 @@
+package users
+
+import (
+	"encoding/json"
+	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
+	"strings"
+)
+
+type User struct {
+	Id       int64           `json:"id"`
+	Domain   string          `json:"domain"`
+	UserId   string          `json:"user_id"`
+	Metadata json.RawMessage `json:"metadata`
+	Status   string          `json:"status"`
+}
+
+type Users []User
+
+func (user *User) Validate() *errors.RestErr {
+	user.Domain = strings.TrimSpace(strings.ToLower(user.Domain))
+	user.UserId = strings.TrimSpace(strings.ToLower(user.UserId))
+	if user.Domain == "" {
+		return errors.NewBadRequestError("RLS-Referrer header is not present")
+	}
+	if user.UserId == "" {
+		return errors.NewBadRequestError("user_id is missing or invalid")
+	}
+	return nil
+}
