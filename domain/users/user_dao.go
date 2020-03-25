@@ -5,14 +5,15 @@ import (
 	"github.com/rezwanul-haque/Metadata-Service/datasources/mysql/lms_db"
 	"github.com/rezwanul-haque/Metadata-Service/logger"
 	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
+	"strings"
 )
 
 const (
-	queryInsertUser = "INSERT INTO user(domain, user_id, metadata, status) VALUES(?, ?, ?, ?);"
-	queryGetUser    = "SELECT id, domain, user_id, metadata, status FROM user WHERE user_id=?;"
-	queryUpdateUser = "UPDATE user SET metadata=JSON_MERGE(metadata, ?), status=? WHERE user_id=?;"
-	//queryDeleteUser       = "DELETE FROM users WHERE id=?;"
-	queryFindUsersByDomain = "SELECT id, domain, user_id, metadata, status FROM user WHERE domain=?;"
+	queryInsertUser                  = "INSERT INTO user(domain, user_id, metadata, status) VALUES(LOWER(?), ?, ?, ?);"
+	queryGetUser                     = "SELECT id, domain, user_id, metadata, status FROM user WHERE user_id=?;"
+	queryUpdateUser                  = "UPDATE user SET metadata=JSON_MERGE(metadata, ?), status=? WHERE user_id=?;"
+	queryFindUsersByDomain           = "SELECT id, domain, user_id, metadata, status FROM user WHERE domain=LOWER(?);"
+	queryFindUsersByDomainAndUserIds = "SELECT id, domain, user_id, metadata, status FROM user WHERE domain=LOWER(?) AND user_id=?;"
 )
 
 func (user *User) Save() *errors.RestErr {
@@ -79,7 +80,7 @@ func (user *User) Search(domain string) ([]User, *errors.RestErr) {
 
 	rows, err := stmt.Query(domain)
 	if err != nil {
-		logger.Error("error when trying to find users by domain", err)
+		logger.Error("error when trying to search users by domain", err)
 		return nil, errors.NewInternalServerError("database error")
 	}
 	defer rows.Close()
@@ -99,4 +100,40 @@ func (user *User) Search(domain string) ([]User, *errors.RestErr) {
 		return nil, errors.NewNotFoundError(fmt.Sprintf("no users matching domain: %s", domain))
 	}
 	return results, nil
+}
+
+func (user *User) SearchByDomainAndIds(domain string, userIds []string) (*map[string]User, *errors.RestErr) {
+	var results map[string]User
+
+	results = make(map[string]User)
+
+	for _, userId := range userIds {
+		data, findErr := findUserById(domain, userId)
+		if findErr != nil {
+			return nil, findErr
+		}
+		results[userId] = *data
+	}
+	return &results, nil
+}
+
+func findUserById(domain string, userId string) (*User, *errors.RestErr) {
+	var result User
+	stmt, err := lms_db.Client.Prepare(queryFindUsersByDomainAndUserIds)
+	if err != nil {
+		logger.Error("error when trying to prepare search user by domain and userId statement", err)
+		return nil, errors.NewInternalServerError("database error")
+	}
+
+	defer stmt.Close()
+
+	row := stmt.QueryRow(domain, userId)
+	if getErr := row.Scan(&result.Id, &result.Domain, &result.UserId, &result.Metadata, &result.Status); getErr != nil {
+		if strings.Contains(getErr.Error(), "sql: no rows in result set") {
+			return &result, nil
+		}
+		logger.Error("error when trying to find user", getErr)
+		return nil, errors.NewInternalServerError("database error")
+	}
+	return &result, nil
 }

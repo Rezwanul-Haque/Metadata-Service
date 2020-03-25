@@ -15,6 +15,6 @@ func mapUrls() {
 
 	router.POST(APIBase+"/users/meta", users.Create)
 	router.PATCH(APIBase+"/users/:user_id/meta", users.Update)
-	router.GET(APIBase+"/users", users.GetAllUsers)
+	router.GET(APIBase+"/users", users.Get)
 	router.POST(APIBase + "/users/meta/search")
 }

@@ -10,7 +10,7 @@ type User struct {
 	Id       int64           `json:"id"`
 	Domain   string          `json:"domain"`
 	UserId   string          `json:"user_id"`
-	Metadata json.RawMessage `json:"metadata`
+	Metadata json.RawMessage `json:"metadata"`
 	Status   string          `json:"status"`
 }
 

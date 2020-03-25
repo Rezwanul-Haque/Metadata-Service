@@ -18,7 +18,8 @@ type usersServiceInterface interface {
 	GetUser(userId string) (*users.User, *errors.RestErr)
 	UpdateUser(user users.User) (*users.User, *errors.RestErr)
 	//DeleteUser(userId int64) *errors.RestErr
-	SearchUser(status string) (users.Users, *errors.RestErr)
+	SearchUser(domain string) (users.Users, *errors.RestErr)
+	SearchUserByDomainAndIds(domain string, userIds []string) (*map[string]users.User, *errors.RestErr)
 }
 
 func (u *usersService) CreateUser(user users.User) (*users.User, *errors.RestErr) {
@@ -67,4 +68,9 @@ func (u *usersService) UpdateUser(user users.User) (*users.User, *errors.RestErr
 func (u *usersService) SearchUser(domain string) (users.Users, *errors.RestErr) {
 	user := &users.User{}
 	return user.Search(domain)
+}
+
+func (u *usersService) SearchUserByDomainAndIds(domain string, userIds []string) (*map[string]users.User, *errors.RestErr) {
+	user := &users.User{}
+	return user.SearchByDomainAndIds(domain, userIds)
 }
