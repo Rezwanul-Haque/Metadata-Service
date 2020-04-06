@@ -3,34 +3,20 @@ package lms_db
 import (
 	"database/sql"
 	"fmt"
+	"github.com/rezwanul-haque/Metadata-Service/utils/helpers"
 	"log"
-	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
-
 )
-
-func goDotEnvVariable(key string) string {
-
-	// load .env file
-	err := godotenv.Load(".env")
-
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	return os.Getenv(key)
-}
 
 var (
 	Client *sql.DB
 
-	username = goDotEnvVariable("MYSQL_LMS_USERNAME")
-	password = goDotEnvVariable("MYSQL_LMS_PASSWORD")
-	host     = goDotEnvVariable("MYSQL_LMS_HOST")
-	port     = goDotEnvVariable("MYSQL_LMS_PORT")
-	schema   = goDotEnvVariable("MYSQL_LMS_SCHEMA")
+	username = helpers.GoDotEnvVariable("MYSQL_LMS_USERNAME")
+	password = helpers.GoDotEnvVariable("MYSQL_LMS_PASSWORD")
+	host     = helpers.GoDotEnvVariable("MYSQL_LMS_HOST")
+	port     = helpers.GoDotEnvVariable("MYSQL_LMS_PORT")
+	schema   = helpers.GoDotEnvVariable("MYSQL_LMS_SCHEMA")
 )
 
 func init() {

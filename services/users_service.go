@@ -17,9 +17,9 @@ type usersServiceInterface interface {
 	CreateUser(users.User) (*users.User, *errors.RestErr)
 	GetUser(userId string) (*users.User, *errors.RestErr)
 	UpdateUser(user users.User) (*users.User, *errors.RestErr)
-	//DeleteUser(userId int64) *errors.RestErr
 	SearchUser(domain string) (users.Users, *errors.RestErr)
 	SearchUserByDomainAndIds(domain string, userIds []string) (*map[string]users.User, *errors.RestErr)
+	FindByQueryDSL(queryDSL interface{}, domain string, queryParams users.QueryParamRequest) (users.UsersSearchResponse, *errors.RestErr)
 }
 
 func (u *usersService) CreateUser(user users.User) (*users.User, *errors.RestErr) {
@@ -73,4 +73,11 @@ func (u *usersService) SearchUser(domain string) (users.Users, *errors.RestErr) 
 func (u *usersService) SearchUserByDomainAndIds(domain string, userIds []string) (*map[string]users.User, *errors.RestErr) {
 	user := &users.User{}
 	return user.SearchByDomainAndIds(domain, userIds)
+}
+
+func (u *usersService) FindByQueryDSL(queryDSL interface{}, domain string, queryParams users.QueryParamRequest) (users.UsersSearchResponse, *errors.RestErr) {
+	users := users.UserSearchResponse{
+		Domain: domain,
+	}
+	return users.SearchByMetadata(queryDSL, queryParams)
 }

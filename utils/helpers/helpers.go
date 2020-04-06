@@ -1,6 +1,12 @@
 package helpers
 
-func IsInvalid(value string) bool {
+import (
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+)
+
+func IsEmpty(value string) bool {
 	if value == "" {
 		return true
 	}
@@ -29,4 +35,15 @@ func Paginate(pageNum int, pageSize int, sliceLength int) (int, int) {
 	}
 
 	return start, end
+}
+
+func GoDotEnvVariable(key string) string {
+	// load .env file
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	return os.Getenv(key)
 }

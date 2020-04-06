@@ -27,3 +27,19 @@ func (user *User) Validate() *errors.RestErr {
 	}
 	return nil
 }
+
+type QueryParamRequest struct {
+	UserIds string  `form:"user_ids,omitempty"`
+	Status  string  `form:"status,omitempty"`
+	Page    float64 `form:"page,omitempty"`
+	Size    float64 `form:"size,omitempty"`
+}
+
+type UserSearchResponse struct {
+	Domain   string          `json:"domain"`
+	UserId   string          `json:"user_id"`
+	Metadata json.RawMessage `json:"metadata"`
+	Status   string          `json:"status"`
+}
+
+type UsersSearchResponse []UserSearchResponse

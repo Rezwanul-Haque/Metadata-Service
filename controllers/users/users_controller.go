@@ -116,3 +116,31 @@ func Update(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, result)
 }
+
+func Search(c *gin.Context) {
+	domain, headerErr := getRlsReferrer(c.GetHeader("RLS-Referrer"))
+	if headerErr != nil {
+		c.JSON(headerErr.Status, headerErr)
+		return
+	}
+
+	var queryParams users.QueryParamRequest
+	if err := c.ShouldBindQuery(&queryParams); err != nil {
+		return
+	}
+
+	var queryDSL interface{}
+	if err := c.ShouldBindJSON(&queryDSL); err != nil {
+		restErr := errors.NewBadRequestError("invalid json body")
+		c.JSON(restErr.Status, restErr)
+		return
+	}
+
+	results, getErr := services.UsersService.FindByQueryDSL(queryDSL, domain, queryParams)
+	if getErr != nil {
+		c.JSON(getErr.Status, getErr)
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}

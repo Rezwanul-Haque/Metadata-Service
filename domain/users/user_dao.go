@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/rezwanul-haque/Metadata-Service/datasources/mysql/lms_db"
 	"github.com/rezwanul-haque/Metadata-Service/logger"
+	"github.com/rezwanul-haque/Metadata-Service/utils/converters"
 	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
 	"strings"
 )
@@ -136,4 +137,45 @@ func findUserById(domain string, userId string) (*User, *errors.RestErr) {
 		return nil, errors.NewInternalServerError("database error")
 	}
 	return &result, nil
+}
+
+func (user *UserSearchResponse) SearchByMetadata(queryDSL interface{}, queryParams QueryParamRequest) (UsersSearchResponse, *errors.RestErr) {
+	metadataSearchQuery, err := converters.GetSQLQueryClauseFromDSL(queryDSL, "u", "metadata")
+	if err != nil {
+		logger.Error("error when trying to convert metadata sql query", err)
+		return nil, errors.NewInternalServerError("database error")
+	}
+	addedUserIdsClause := converters.RequestParamsToSqlQuery(queryParams.UserIds, queryParams.Page, queryParams.Size, queryParams.Status, "u")
+
+	queryFindUsersByMetadata := "SELECT domain, user_id, metadata, status FROM user u WHERE LOWER(u.domain) = LOWER(?)" + *metadataSearchQuery + addedUserIdsClause
+
+	stmt, err := lms_db.Client.Prepare(queryFindUsersByMetadata)
+	if err != nil {
+		logger.Error("error when trying to prepare search user by domain statement", err)
+		return nil, errors.NewInternalServerError("database error")
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query(user.Domain)
+	if err != nil {
+		logger.Error("error when trying to search users by domain", err)
+		return nil, errors.NewInternalServerError("database error")
+	}
+	defer rows.Close()
+
+	results := make([]UserSearchResponse, 0)
+
+	for rows.Next() {
+		var user UserSearchResponse
+		if err := rows.Scan(&user.Domain, &user.UserId, &user.Metadata, &user.Status); err != nil {
+			logger.Error("error when scan user row into user struct", err)
+			return nil, errors.NewInternalServerError("database error")
+		}
+		results = append(results, user)
+	}
+
+	if len(results) == 0 {
+		return nil, errors.NewNotFoundError(fmt.Sprintf("no users matching domain: %s", user.Domain))
+	}
+	return results, nil
 }
