@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/rezwanul-haque/ID-Service/controllers/ping"
+	"github.com/rezwanul-haque/Metadata-Service/controllers/ping"
 	"github.com/rezwanul-haque/Metadata-Service/controllers/users"
 	"github.com/rezwanul-haque/Metadata-Service/utils/consts"
 )

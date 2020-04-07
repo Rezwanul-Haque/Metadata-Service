@@ -125,6 +125,8 @@ func Search(c *gin.Context) {
 	}
 
 	var queryParams users.QueryParamRequest
+	queryParams.Page = 1   // default
+	queryParams.Size = 100 // default
 	if err := c.ShouldBindQuery(&queryParams); err != nil {
 		return
 	}
