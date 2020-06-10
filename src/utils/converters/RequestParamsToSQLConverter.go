@@ -2,7 +2,7 @@ package converters
 
 import (
 	"fmt"
-	"github.com/rezwanul-haque/Metadata-Service/utils/helpers"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/helpers"
 	"math"
 	"strings"
 )

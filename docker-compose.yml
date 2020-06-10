@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  mysql:
+    container_name: mysql
+    build:
+      context: ./docker/mysql
+    volumes:
+      - "./db_data:/var/lib/mysql"
+    env_file:
+      - "src/.env"
+    ports:
+      - "3306:3306"
+    tty: true
+
+  metadata_service:
+    container_name: metadata_service
+    build:
+      context: .
+      dockerfile: ./docker/go/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - "src/.env"
+    tty: true
+    depends_on:
+      - mysql

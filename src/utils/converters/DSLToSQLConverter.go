@@ -2,7 +2,7 @@ package converters
 
 import (
 	"fmt"
-	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/errors"
 	"reflect"
 	"strings"
 )

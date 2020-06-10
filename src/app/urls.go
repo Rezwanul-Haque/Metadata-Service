@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/rezwanul-haque/Metadata-Service/controllers/ping"
-	"github.com/rezwanul-haque/Metadata-Service/controllers/users"
-	"github.com/rezwanul-haque/Metadata-Service/utils/consts"
+	"github.com/rezwanul-haque/Metadata-Service/src/controllers/ping"
+	"github.com/rezwanul-haque/Metadata-Service/src/controllers/users"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/consts"
 )
 
 const (

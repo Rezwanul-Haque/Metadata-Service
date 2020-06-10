@@ -3,7 +3,7 @@ package lms_db
 import (
 	"database/sql"
 	"fmt"
-	"github.com/rezwanul-haque/Metadata-Service/utils/helpers"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/helpers"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"

@@ -2,7 +2,7 @@ package users
 
 import (
 	"encoding/json"
-	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/errors"
 	"strings"
 )
 

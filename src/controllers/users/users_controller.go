@@ -2,10 +2,10 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rezwanul-haque/Metadata-Service/domain/users"
-	"github.com/rezwanul-haque/Metadata-Service/services"
-	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
-	"github.com/rezwanul-haque/Metadata-Service/utils/helpers"
+	"github.com/rezwanul-haque/Metadata-Service/src/domain/users"
+	"github.com/rezwanul-haque/Metadata-Service/src/services"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/errors"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/helpers"
 	"net/http"
 	"strconv"
 	"strings"

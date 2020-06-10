@@ -2,10 +2,10 @@ package users
 
 import (
 	"fmt"
-	"github.com/rezwanul-haque/Metadata-Service/datasources/mysql/lms_db"
-	"github.com/rezwanul-haque/Metadata-Service/logger"
-	"github.com/rezwanul-haque/Metadata-Service/utils/converters"
-	"github.com/rezwanul-haque/Metadata-Service/utils/errors"
+	"github.com/rezwanul-haque/Metadata-Service/src/datasources/mysql/lms_db"
+	"github.com/rezwanul-haque/Metadata-Service/src/logger"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/converters"
+	"github.com/rezwanul-haque/Metadata-Service/src/utils/errors"
 	"strings"
 )
 

@@ -12,13 +12,33 @@ All the metadata are stored in a column called 'metadata' in a table having stru
 
 'status' is a special type of meta hence it is handled specially.
 
+# Run the app
+> create .env file in the src folder for example check .env.example
+```
+./run.sh
+```
+## If connection refused error occur then
+> This error occur as mysql need some time to initialize but go request to connect 
+> before mysql connection stabilize 
+```
+docker-compose down
+# then
+docker-compose up -d mysql
+docker-compose up -d meatadata_service
+``` 
+
 ### Constraints
 
 We ensure to support 10,000 delivery 1 day. Say, morning 1hr, noon 1hr, night 1hr traffic. 
 (10,000 / 3 / 60 / 60) = 1 req/sec.
 
 ### API Endpoints
-
+#### Health Check: 
+**GET** /api/v1/ping
+**Response**
+```
+pong
+```
 1. **POST** /api/v1/users/meta
    
    **Description:** Create/Replace User

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rezwanul-haque/Metadata-Service/app"
+	"github.com/rezwanul-haque/Metadata-Service/src/app"
 )
 
 func main() {

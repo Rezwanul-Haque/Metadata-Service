@@ -1,4 +1,4 @@
-module github.com/rezwanul-haque/Metadata-Service
+module github.com/rezwanul-haque/Metadata-Service/src
 
 go 1.14
 

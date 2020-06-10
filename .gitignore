@@ -121,6 +121,9 @@ fabric.properties
 !.vscode/extensions.json
 
 ### .env ###
-.env
+src/.env
+
+### Persistance data folder ###
+db_data
 
 # End of https://www.gitignore.io/api/go,intellij
