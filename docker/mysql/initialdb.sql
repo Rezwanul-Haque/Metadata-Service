@@ -12,6 +12,6 @@ CREATE TABLE `user` (
                       UNIQUE KEY uk_domain_user_id (`domain`,`user_id`)
 ) ENGINE=InnoDB CHARSET=utf8;
 
--- CREATE USER 'root'@'%' IDENTIFIED BY '12345678';
--- GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
--- FLUSH PRIVILEGES;
+CREATE USER 'md_user'@'%' IDENTIFIED BY '12345678';
+GRANT ALL PRIVILEGES ON *.* TO 'md_user'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;

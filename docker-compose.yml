@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.5'
 
 services:
   mysql:
@@ -12,6 +12,8 @@ services:
     ports:
       - "3306:3306"
     tty: true
+    networks:
+      - rls_networks
 
   metadata_service:
     container_name: metadata_service
@@ -25,3 +27,11 @@ services:
     tty: true
     depends_on:
       - mysql
+    networks:
+      - rls_networks
+    restart: on-failure:3
+
+networks:
+  rls_networks:
+    name: rls_networks
+    driver: bridge
